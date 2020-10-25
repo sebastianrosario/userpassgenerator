@@ -1,7 +1,7 @@
 import subprocess
 import shlex
 
-
+bash_shell = '/bin/bash'
 user_arr = []
 
 
@@ -29,11 +29,18 @@ def admin_add(groupname):
     admin_skel = '/etc/skel/adminskel'
     get_usrs(groupname)
     userid = int(get_usr_id()) + 1
-    
+
     for combo in range(len(user_arr)):
-        command_args = shlex.split('useradd -m -u {} -g {} -k {} -p {} {}'.format(userid, groupname, admin_skel, user_arr[combo][1], user_arr[combo][0]))
-        subprocess.call(command_args)
-        print(command_args)
+        password = user_arr[combo][1]
+        adduser_command_args = shlex.split('useradd -m -u {} -G {} -k {} -s {} {}'.format(userid, groupname, admin_skel, bash_shell, user_arr[combo][0]))
+        echo_command_args = shlex.split("echo -e '{}\n{}\n'".format(password, password))
+        password_command_args = shlex.split('passwd {}'.format(user_arr[combo][0]))
+
+        subprocess.call(adduser_command_args)
+        echo_command = subprocess.Popen(echo_command_args, stdout=subprocess.PIPE)
+        password_command = subprocess.Popen(password_command_args, stdin=echo_command.stdout, stdout=subprocess.PIPE)
+        echo_command.stdout.close()
+        subprocess.call(password_command)
         userid += 1
 
 
@@ -43,9 +50,8 @@ def staff_add(groupname):
     userid = int(get_usr_id()) + 1
 
     for combo in range(len(user_arr)):
-        command_args = shlex.split('useradd -m -u {} -g {} -k {} -p {} {}'.format(userid, groupname, staff_skel, user_arr[combo][1], user_arr[combo][0]))
-        subprocess.call(command_args)
-        print(command_args)
+        adduser_command_args = shlex.split('useradd -m -u {} -G {} -k {} -s {} {}'.format(userid, groupname, staff_skel, bash_shell, user_arr[combo][0]))
+        subprocess.call(adduser_command_args)
         userid += 1
 
 
@@ -54,11 +60,10 @@ def developer_add(groupname):
     cshell = '/bin/csh'
     get_usrs(groupname)
     userid = int(get_usr_id()) + 1
-    
     for combo in range(len(user_arr)):
-        command_args = shlex.split('useradd -m -u {} -s {} -g {} -k {} -p {} {}'.format(userid, cshell, groupname, developer_skel, user_arr[combo][1], user_arr[combo][0]))
-        subprocess.call(command_args)
-        print(command_args)
+        adduser_command_args = shlex.split('useradd -m -u {} -s {} -G {} -k {} {}'.format(userid, cshell, groupname, developer_skel, user_arr[combo][0]))
+        subprocess.call(adduser_command_args)
+        print(adduser_command_args)
         userid += 1
 
 
@@ -68,8 +73,8 @@ def temp_add(groupname):
     userid = int(get_usr_id()) + 1
 
     for combo in range(len(user_arr)):
-        command_args = shlex.split('useradd -m -u {} -g {} -k {} -p {} {}'.format(userid, groupname, temp_skel, user_arr[combo][1], user_arr[combo][0]))
-        subprocess.call(command_args)
-        print(command_args)
+        adduser_command_args = shlex.split('useradd -m -u {} -G {} -k {} -s {} {}'.format(userid, groupname, temp_skel, bash_shell, user_arr[combo][0]))
+        subprocess.call(adduser_command_args)
+        print(adduser_command_args)
         userid += 1
 
