@@ -135,7 +135,7 @@ def temp_add(groupname):
         # Stores date in format that useradd command can use
         date_command_args = shlex.split('date --date="60 days" +%Y-%m-%d')
         date_command = subprocess.Popen(date_command_args, stdout=subprocess.PIPE)
-        date_60_days = date_command.communicate()[0]
+        date_60_days = date_command.communicate()[0].decode('utf-8')
 
         adduser_command_args = shlex.split('useradd -m -d /home/temp/users/{} -u {} -G {} -k {} -s {} -e {} {}'.format(username, userid, groupname, temp_skel, bash_shell, date_60_days, username))
         subprocess.call(adduser_command_args)
