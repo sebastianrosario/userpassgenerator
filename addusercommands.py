@@ -97,7 +97,7 @@ def staff_add(groupname):
         password = user_arr[combo][1]
         username = user_arr[combo][0]
 
-        adduser_command_args = shlex.split('useradd -m -d /home/staff/users/{} -u {} -G {} -k {} -s {} {}'.format(username, userid, groupname, staff_skel, bash_shell, username))
+        adduser_command_args = shlex.split('useradd -m -d /home/companystaff/users/{} -u {} -G {} -k {} -s {} {}'.format(username, userid, groupname, staff_skel, bash_shell, username))
         subprocess.call(adduser_command_args)
 
         define_password(username, password)
