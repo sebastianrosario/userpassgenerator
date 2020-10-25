@@ -30,8 +30,7 @@ def write_password_to_file(group):
     hashed = open('{}files/{}hashedpass.txt'.format(group, group), 'a')
     with open('{}files/{}usernames.txt'.format(group, group), 'r') as file:
         for username in file:
-            username.strip()
-            if username:
+            if username != '\n':
                 current_pass = password_generator()
                 hashed_pass = current_pass[1]
                 cleartext.write(username.strip('\n') + ':' + current_pass[0] + '\n')

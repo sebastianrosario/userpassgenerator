@@ -26,9 +26,9 @@ def get_usr_id():
     return last_userid
 
 
-def define_password(usrname, pword):
-    echo_command_args = shlex.split("echo -e '{}\n{}\n'".format(pword, pword))
-    password_command_args = shlex.split('passwd {}'.format(usrname))
+def define_password(define_password_username, define_password_pass):
+    echo_command_args = shlex.split("echo -e '{}\n{}\n'".format(define_password_pass, define_password_pass))
+    password_command_args = shlex.split('passwd {}'.format(define_password_username))
 
     echo_command = subprocess.Popen(echo_command_args, stdout=subprocess.PIPE)
     password_command = subprocess.Popen(password_command_args, stdin=echo_command.stdout, stdout=subprocess.PIPE)
@@ -45,7 +45,7 @@ def admin_add(groupname):
         password = user_arr[combo][1]
         username = user_arr[combo][0]
 
-        adduser_command_args = shlex.split('useradd -m -d /home/admin/users/{} -u {} -G {} -k {} -s {} {}'.format(user_arr[combo][0], userid, groupname, admin_skel, bash_shell, username))
+        adduser_command_args = shlex.split('useradd -m -d /home/admin/users/{} -u {} -G {} -k {} -s {} {}'.format(username, userid, groupname, admin_skel, bash_shell, username))
         subprocess.call(adduser_command_args)
 
         define_password(username, password)
@@ -60,15 +60,12 @@ def staff_add(groupname):
 
     for combo in range(len(user_arr)):
         password = user_arr[combo][1]
-        adduser_command_args = shlex.split('useradd -m -d /home/staff/users/{} -u {} -G {} -k {} -s {} {}'.format(user_arr[combo][0], userid, groupname, staff_skel, bash_shell, user_arr[combo][0]))
-        echo_command_args = shlex.split("echo -e '{}\n{}\n'".format(password, password))
-        password_command_args = shlex.split('passwd {}'.format(user_arr[combo][0]))
+        username = user_arr[combo][0]
 
+        adduser_command_args = shlex.split('useradd -m -d /home/staff/users/{} -u {} -G {} -k {} -s {} {}'.format(username, userid, groupname, staff_skel, bash_shell, username))
         subprocess.call(adduser_command_args)
-        echo_command = subprocess.Popen(echo_command_args, stdout=subprocess.PIPE)
-        password_command = subprocess.Popen(password_command_args, stdin=echo_command.stdout, stdout=subprocess.PIPE)
-        echo_command.stdout.close()
-        password_command.communicate()
+
+        define_password(username, password)
         userid += 1
 
 
@@ -79,12 +76,12 @@ def developer_add(groupname):
 
     for combo in range(len(user_arr)):
         password = user_arr[combo][1]
-        adduser_command_args = shlex.split('useradd -m -d /home/developer/users/{} -u {} -s {} -G {} -k {} {}'.format(user_arr[combo][0], userid, cshell, groupname, developer_skel, user_arr[combo][0]))
-        echo_command_args = shlex.split("echo -e '{}\n{}\n'".format(password, password))
-        password_command_args = shlex.split('passwd {}'.format(user_arr[combo][0]))
+        username = user_arr[combo][1]
 
+        adduser_command_args = shlex.split('useradd -m -d /home/developer/users/{} -u {} -s {} -G {} -k {} {}'.format(username, userid, cshell, groupname, developer_skel, username))
         subprocess.call(adduser_command_args)
-        print(adduser_command_args)
+
+        define_password(username, password)
         userid += 1
 
 
@@ -94,8 +91,17 @@ def temp_add(groupname):
     userid = int(get_usr_id()) + 1
 
     for combo in range(len(user_arr)):
-        adduser_command_args = shlex.split('useradd -m -u {} -G {} -k {} -s {} {}'.format(userid, groupname, temp_skel, bash_shell, user_arr[combo][0]))
+        password = user_arr[combo][1]
+        username = user_arr[combo][1]
+        date_command_args = shlex.split('date --date="60 days" +%Y-%m-%d')
+        date_command = subprocess.Popen(date_command_args, stdout=subprocess.PIPE)
+        date_60_days = date_command.communicate()[0]
+
+        adduser_command_args = shlex.split('useradd -m -d /home/temp/users/{} -u {} -G {} -k {} -s {} -e {} {}'.format(username, userid, groupname, temp_skel, bash_shell, date_60_days, username))
         subprocess.call(adduser_command_args)
-        print(adduser_command_args)
+
+        date_command.stdout.close()
+
+        define_password(username, password)
         userid += 1
 
