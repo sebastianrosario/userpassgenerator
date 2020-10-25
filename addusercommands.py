@@ -29,6 +29,7 @@ def admin_add(groupname):
     admin_skel = '/etc/skel/adminskel'
     get_usrs(groupname)
     userid = int(get_usr_id()) + 1
+    
     for combo in range(len(user_arr)):
         command_args = shlex.split('useradd -m -u {} -g {} -k {} -p {} {}'.format(userid, groupname, admin_skel, user_arr[combo][1], user_arr[combo][0]))
         subprocess.call(command_args)
@@ -53,6 +54,7 @@ def developer_add(groupname):
     cshell = '/bin/csh'
     get_usrs(groupname)
     userid = int(get_usr_id()) + 1
+    
     for combo in range(len(user_arr)):
         command_args = shlex.split('useradd -m -u {} -s {} -g {} -k {} -p {} {}'.format(userid, cshell, groupname, developer_skel, user_arr[combo][1], user_arr[combo][0]))
         subprocess.call(command_args)
