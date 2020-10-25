@@ -31,10 +31,11 @@ def write_password_to_file(group):
     with open('{}files/{}usernames.txt'.format(group, group), 'r') as file:
         for username in file:
             username.strip()
-            current_pass = password_generator()
-            hashed_pass = current_pass[1]
-            cleartext.write(username.strip('\n') + ':' + current_pass[0] + '\n')
-            hashed.write(username.strip('\n') + ':' + hashed_pass + '\n')
+            if username:
+                current_pass = password_generator()
+                hashed_pass = current_pass[1]
+                cleartext.write(username.strip('\n') + ':' + current_pass[0] + '\n')
+                hashed.write(username.strip('\n') + ':' + hashed_pass + '\n')
 
     cleartext.close()
     hashed.close()
