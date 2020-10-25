@@ -36,8 +36,9 @@ def find_collisions(ff):
             print('File Empty!')
 
 
-def write_users_to_file(input_file):
+def write_users_to_file(input_file, output_group):
     with open(input_file, 'r') as username_file:
+        output_group_file = open('{}files/{}usernames.txt'.format(output_group, output_group), 'a')
         process_file(username_file)
         tuple_names = tuple(full_name)
         tuple_names = sorted(tuple_names, key=lambda name: name[-1])
@@ -50,19 +51,23 @@ def write_users_to_file(input_file):
                     if not hashcheck.validate_usernames(collision[collision_counter], 'processedusernames.txt'):
                         print(collision[collision_counter])
                         processed_users.write(collision[collision_counter] + '\n')
+                        output_group_file.write(collision[collision_counter] + '\n')
                     else:
                         collision[collision_counter] = str(input('\nCollision Was detected for {} Please select a different username. \n'.format(collision[collision_counter])))
                         print(collision[collision_counter])
                         processed_users.write(collision[collision_counter] + '\n')
+                        output_group_file.write(collision[collision_counter] + '\n')
 
                 for normal_counter in range(len(normal)):
                     if not hashcheck.validate_usernames(normal[normal_counter], 'processedusernames.txt'):
                         print(normal[normal_counter])
                         processed_users.write(normal[normal_counter] + '\n')
+                        output_group_file.write(normal[normal_counter] + '\n')
                     else:
                         normal[normal_counter] = str(input('\nCollision was detected for {}. Please select a different username. \n'.format(normal[normal_counter])))
                         print(normal[normal_counter])
                         processed_users.write(normal[normal_counter] + '\n')
+                        output_group_file.write(normal[normal_counter] + '\n')
 
         else:
             print('Making processedusernames.txt')
@@ -70,8 +75,11 @@ def write_users_to_file(input_file):
                 for collision_names in collision:
                     print(collision_names)
                     processed_users.write(collision_names + '\n')
+                    output_group_file.write(collision_names + '\n')
 
                 for normal_names in normal:
                     print(normal_names)
                     processed_users.write(normal_names + '\n')
+                    output_group_file.write(normal_names + '\n')
 
+        output_group_file.close()

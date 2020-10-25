@@ -28,7 +28,7 @@ def hash_password(passwd):
 def write_password_to_file(group):
     cleartext = open('{}files/{}cleartextpass.txt'.format(group, group), 'a')
     hashed = open('{}files/{}hashedpass.txt'.format(group, group), 'a')
-    with open('processedusernames.txt', 'r') as file:
+    with open('{}files/{}usernames.txt'.format(group, group), 'r') as file:
         for username in file:
             current_pass = password_generator()
             hashed_pass = current_pass[1]

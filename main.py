@@ -13,7 +13,7 @@ def main():
     print(sys.version)
     if len(sys.argv) == 3:
         print('Generating usernames and writing to processedusernames.txt...')
-        usernamegenerator.write_users_to_file(sys.argv[2])
+        usernamegenerator.write_users_to_file(sys.argv[2], sys.argv[1])
         print('Generating passwords...')
         passwordgenerator.write_password_to_file(sys.argv[1])
         if sys.argv[1] == 'admin':
