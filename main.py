@@ -35,7 +35,7 @@ def main():
             addusercommands.admin_add(sys.argv[1])
         elif sys.argv[1] == 'developer':
             addusercommands.developer_add(sys.argv[1])
-        elif sys.argv[1] == 'staff':
+        elif sys.argv[1] == 'companystaff':
             addusercommands.staff_add(sys.argv[1])
         elif sys.argv[1] == 'temp':
             addusercommands.temp_add(sys.argv[1])
