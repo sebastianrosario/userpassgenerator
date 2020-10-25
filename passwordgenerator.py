@@ -4,7 +4,7 @@ import string
 import hashlib
 
 
-# Functiont that encodes any string passed to it with utf-8
+# Function that encodes any string passed to it with utf-8
 def string_encode(s):
     return s.encode('utf-8', 'replace')
 
