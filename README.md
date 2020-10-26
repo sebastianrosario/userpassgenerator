@@ -24,6 +24,8 @@ These three things are things that userpassgenerator does not create so they hav
 Existing usernames have to added to the <i>processedusernames.txt</i> to avoid username collisions with existing usernames. 
 Username collisions within the input file are handled by the script.
 
+Script will stop if collision is found with the usernames on the system and will ask user for a new username.
+
 ## Username Rules
 Normal Username Rules:
 > ``` [firstletter][lastname] ```
